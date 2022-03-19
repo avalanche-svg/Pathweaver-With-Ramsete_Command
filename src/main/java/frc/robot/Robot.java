@@ -26,7 +26,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   String trajectoryJSON = "Paths/PathWeaverTest.wpilib.json";
-  Trajectory trajectory = new Trajectory();
+  public Trajectory trajectory = new Trajectory();
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,8 +37,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+     Path PathweaverTestPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(PathweaverTestPath);
    } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
    }
