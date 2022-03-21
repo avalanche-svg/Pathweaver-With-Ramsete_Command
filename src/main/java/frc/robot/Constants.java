@@ -26,9 +26,10 @@ public final class Constants {
     public static final boolean kLeftEncoderReversed = false;
     public static final boolean kRightEncoderReversed = true;
 
-    public static final double kTrackwidthMeters = 0.5588;
+    public static final double kTrackwidthMeters4779 = 0.5588;
+    public static final double kTrackwidthMetersRoboFett = 0.53975;
     public static final DifferentialDriveKinematics kDriveKinematics =
-        new DifferentialDriveKinematics(kTrackwidthMeters);
+        new DifferentialDriveKinematics(kTrackwidthMetersRoboFett);
 
     public static final int kEncoderCPR = 2048;
     public static final double kWheelDiameterMeters = 0.1524;
