@@ -38,10 +38,10 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
-  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(-0.004, 1.5889, 0.075);
+  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.73494, 1.343, 0.98456);
 
-  PIDController leftPidController = new PIDController(0.05, 0, 0); // dummy value for p
-  PIDController righPidController = new PIDController(0.05, 0, 0);
+  PIDController leftPidController = new PIDController(2.1666, 0, 0); // dummy value for p
+  PIDController righPidController = new PIDController(2.1666, 0, 0);
 
   Pose2d pose;
 
