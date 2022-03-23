@@ -33,7 +33,7 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   WPI_TalonFX leftSlave = new WPI_TalonFX(DriveConstants.kLeftMotorSlavePort);
   WPI_TalonFX rightSlave = new WPI_TalonFX(DriveConstants.kRightMotorSlavePort);
 
-  AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
@@ -45,6 +45,8 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
 
   Pose2d pose;
 
+
+  private final DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
   /** Creates a new DriveTrainTestSubsystem. */
   public DriveTrainTestSubsystem() {
     leftSlave.set(ControlMode.Follower, leftMaster.getDeviceID());
@@ -97,5 +99,9 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
+  }
+
+  public void arcadeDrive(double fwd, double rot) {
+    drive.arcadeDrive(fwd, rot);
   }
 }
