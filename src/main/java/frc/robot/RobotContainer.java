@@ -97,7 +97,7 @@ public class RobotContainer {
          * Pose2d(1.0, 0, new Rotation2d())), config
          * );
          */
-        String trajectory1 = "Paths/PathWeaverTest.wpilib.json"; // first thing to change is add output/ to make it "Paths/ouput/PathWeaverTest.wpilib.json"
+        String trajectory1 = "PathWeaver/output/PathweaverTest.wpilib.json"; // first thing to change is add output/ to make it "Paths/ouput/PathWeaverTest.wpilib.json"
         Trajectory PathWeaverTrajectory1 = new Trajectory();
 
         try {

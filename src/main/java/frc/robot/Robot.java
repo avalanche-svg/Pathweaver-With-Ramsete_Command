@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  String trajectoryJSON = "Paths/utput/PathWeaverTest.wpilib.json";
+  String trajectoryJSON = "PathWeaver/output/PathweaverTest.wpilib.json";
   public Trajectory trajectory = new Trajectory();
   
 
