@@ -104,4 +104,15 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   public void arcadeDrive(double fwd, double rot) {
     drive.arcadeDrive(fwd, rot);
   }
+
+  public void setNeutralMode(NeutralMode mode) {
+    leftMaster.setNeutralMode(mode);
+    leftSlave.setNeutralMode(mode);
+    rightMaster.setNeutralMode(mode);
+    rightSlave.setNeutralMode(mode);
+  }
+  
+  public void setMotorSafety(boolean turnOn) {
+    drive.setSafetyEnabled(turnOn);
+  }
 }

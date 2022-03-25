@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -25,8 +27,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  String trajectoryJSON = "paths/PathweaverTest.wpilib.json";
-  public Trajectory trajectory = new Trajectory();
+  // String trajectoryJSON = "output/testpath.wpilib.json";
+  // Trajectory trajectory = new Trajectory();
   
 
   /**
@@ -36,12 +38,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    try {
-     Path PathweaverTestPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(PathweaverTestPath);
-   } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-   }
+  //   try {
+  //    Path PathweaverTestPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+  //     trajectory = TrajectoryUtil.fromPathweaverJson(PathweaverTestPath);
+  //  } catch (IOException ex) {
+  //     DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+  //  }
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -56,6 +58,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+  
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -65,7 +68,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.getDriveTrainTestSubsystem().setNeutralMode(NeutralMode.Brake);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -75,6 +80,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.getAutonomousCommand().schedule();
+    m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(false);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -92,6 +98,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+    m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(false);
     CommandScheduler.getInstance().run();
   }
 

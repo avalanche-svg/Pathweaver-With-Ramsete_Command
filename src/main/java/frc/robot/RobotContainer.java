@@ -43,7 +43,7 @@ import java.util.Arrays;
 public class RobotContainer {
     // The robot's subsystems
     private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-    private final DriveTrainTestSubsystem drive = new DriveTrainTestSubsystem();
+    public final DriveTrainTestSubsystem drive = new DriveTrainTestSubsystem();
     private Robot m_robot;;
 
     // The driver's controller
@@ -92,12 +92,13 @@ public class RobotContainer {
         TrajectoryConfig config = new TrajectoryConfig(Units.inchesToMeters(10000.0), Units.inchesToMeters(6000.0));
         config.setKinematics(drive.getKinematics());
         /*
-         * Trajectory trajectory =
-         * TrajectoryGenerator.generateTrajectory(Arrays.asList(new Pose2d(), new
-         * Pose2d(1.0, 0, new Rotation2d())), config
-         * );
+          Trajectory trajectory =
+          TrajectoryGenerator.generateTrajectory(Arrays.asList(new Pose2d(), new
+          Pose2d(6, 6, new Rotation2d())), config
+          );
          */
-        String trajectory1 = "paths/PathweaverTest.wpilib.json"; // first thing to change is add output/ to make it "Paths/ouput/PathWeaverTest.wpilib.json"
+       
+         String trajectory1 = "output/testpath.wpilib.json"; // first thing to change is add output/ to make it "Paths/ouput/PathWeaverTest.wpilib.json"
         Trajectory PathWeaverTrajectory1 = new Trajectory();
 
         try {
@@ -110,6 +111,7 @@ public class RobotContainer {
                 new RamseteController(2, 0.7), drive.getFeedForward(), drive.getKinematics(), drive::getSpeeds,
                 drive.getLeftPIDController(), drive.getRightPIDController(), drive::setOuput, drive);
         return command;
+        
         // Create a voltage constraint to ensure we don't accelerate too fast
         /*
          * var autoVoltageConstraint =
@@ -167,4 +169,7 @@ public class RobotContainer {
          * return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
          */
     }
+    public DriveTrainTestSubsystem getDriveTrainTestSubsystem() {
+        return drive;
+      }
 }
