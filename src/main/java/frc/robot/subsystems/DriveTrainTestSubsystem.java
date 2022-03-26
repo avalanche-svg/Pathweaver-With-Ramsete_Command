@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,20 +36,23 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(23));
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(22));
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.75997, 0.074198, 0.013752);
 
-  PIDController leftPidController = new PIDController(0.10775, 0, 0); 
-  PIDController righPidController = new PIDController(0.10775, 0, 0);
+  // PIDController leftPidController = new PIDController(0.10775, 0, 0);
+  // PIDController rightPidController = new PIDController(0.10775, 0, 0);
+  PIDController rightPidController = new PIDController(8.5, 0, 0);
+  PIDController leftPidController = new PIDController(8.5, 0, 0);
 
   Pose2d pose;
 
-
   private final DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
+
   /** Creates a new DriveTrainTestSubsystem. */
   public DriveTrainTestSubsystem() {
+    drive.setSafetyEnabled(false);
     leftSlave.set(ControlMode.Follower, leftMaster.getDeviceID());
     rightSlave.set(ControlMode.Follower, rightMaster.getDeviceID());
 
@@ -66,8 +70,8 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
 
   public DifferentialDriveWheelSpeeds getSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        leftMaster.getSelectedSensorVelocity(),
-        rightMaster.getSelectedSensorVelocity());
+        leftMaster.getSelectedSensorVelocity()  / 6 * Math.PI,
+        rightMaster.getSelectedSensorVelocity() / 6 * Math.PI);
   }
 
   public SimpleMotorFeedforward getFeedForward() {
@@ -79,7 +83,7 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   }
 
   public PIDController getRightPIDController() {
-    return righPidController;
+    return rightPidController;
   }
 
   public DifferentialDriveKinematics getKinematics() {
@@ -91,14 +95,17 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   }
 
   public void setOuput(double leftVolts, double rightVolts) {
-    leftMaster.set(leftVolts / 12);
-    rightMaster.set(rightVolts / 12);
+    leftMaster.set(leftVolts);
+    rightMaster.set(rightVolts);
+    drive.feed();
   }
 
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
-    pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity(), rightMaster.getSelectedSensorVelocity());
+    // System.out.println(gyro.getAngle());
+    pose = odometry.update(getHeading(), leftMaster.getSelectedSensorVelocity()  / 6 * Math.PI,
+        rightMaster.getSelectedSensorVelocity()  / 6 * Math.PI);
   }
 
   public void arcadeDrive(double fwd, double rot) {
@@ -111,8 +118,22 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
     rightMaster.setNeutralMode(mode);
     rightSlave.setNeutralMode(mode);
   }
-  
+
   public void setMotorSafety(boolean turnOn) {
     drive.setSafetyEnabled(turnOn);
+  }
+
+  public boolean isSafetyEnabled() {
+    return drive.isSafetyEnabled();
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    odometry.resetPosition(pose, gyro.getRotation2d());
+  }
+
+  public void resetEncoders() {
+    rightMaster.setSelectedSensorPosition(0);
+    leftMaster.setSelectedSensorPosition(0);
   }
 }

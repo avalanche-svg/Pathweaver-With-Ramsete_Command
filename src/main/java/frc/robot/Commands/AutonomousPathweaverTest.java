@@ -41,10 +41,11 @@ public class AutonomousPathweaverTest extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.setMotorSafety(false);
+    
     RamseteCommand command = new RamseteCommand(PathWeaverTrajectory1, drive::getpose,
     new RamseteController(2, 0.7), drive.getFeedForward(), drive.getKinematics(), drive::getSpeeds,
     drive.getLeftPIDController(), drive.getRightPIDController(), drive::setOuput, drive);
+    
   }
 
   // Called once the command ends or is interrupted.

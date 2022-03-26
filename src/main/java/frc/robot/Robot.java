@@ -9,6 +9,7 @@ import java.nio.file.Path;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot {
   //  }
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    CameraServer.startAutomaticCapture();
     m_robotContainer = new RobotContainer();
   }
 
@@ -64,6 +66,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateTelemetry();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
