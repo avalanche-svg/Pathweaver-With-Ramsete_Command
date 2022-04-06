@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DriveTrainTestSubsystem;
@@ -36,21 +37,25 @@ public class AutonomousPathweaverTest extends CommandBase {
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectory1, ex.getStackTrace());
     }
+
+    RamseteCommand command = new RamseteCommand(PathWeaverTrajectory1, drive::getpose,
+    new RamseteController(2, 0.7), drive.getFeedForward(), drive.getKinematics(), drive::getSpeeds,
+    drive.getLeftPIDController(), drive.getRightPIDController(), drive::setOuput, drive);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     
-    RamseteCommand command = new RamseteCommand(PathWeaverTrajectory1, drive::getpose,
-    new RamseteController(2, 0.7), drive.getFeedForward(), drive.getKinematics(), drive::getSpeeds,
-    drive.getLeftPIDController(), drive.getRightPIDController(), drive::setOuput, drive);
+    
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("command ended");
+    drive.stopMotors();
   }
 
   // Returns true when the command should end.

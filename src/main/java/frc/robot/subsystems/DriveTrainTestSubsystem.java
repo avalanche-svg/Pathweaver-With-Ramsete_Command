@@ -136,4 +136,11 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
     rightMaster.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
   }
+
+  public void stopMotors(){
+    leftMaster.stopMotor();
+    rightMaster.stopMotor();
+    leftSlave.stopMotor();
+    rightSlave.stopMotor();
+  }
 }
