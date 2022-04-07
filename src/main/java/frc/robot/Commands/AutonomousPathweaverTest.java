@@ -31,6 +31,7 @@ public class AutonomousPathweaverTest extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drive.resetOdometry(PathWeaverTrajectory1.getInitialPose());
     try {
       Path PathweaverTestPath = Filesystem.getDeployDirectory().toPath().resolve(trajectory1);
       PathWeaverTrajectory1 = TrajectoryUtil.fromPathweaverJson(PathweaverTestPath);
