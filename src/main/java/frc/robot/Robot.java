@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Commands.Drivestop;
+import frc.robot.subsystems.DriveTrainTestSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,7 +27,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  DriveTrainTestSubsystem drive;
   private Command m_autonomousCommand;
+  private Drivestop stopdrive = new Drivestop(drive);
 
   private RobotContainer m_robotContainer;
   // String trajectoryJSON = "output/testpath.wpilib.json";
@@ -83,7 +87,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.getAutonomousCommand().schedule();
-    m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(false);
+    
+    // m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(true);
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -101,7 +106,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(false);
+    // m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(true);
     CommandScheduler.getInstance().run();
   }
 
