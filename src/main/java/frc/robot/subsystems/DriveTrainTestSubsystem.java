@@ -39,12 +39,12 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(22));
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
-  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.75997, 0.074198, 0.013752);
+  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.67804, 1.6405, 0.35706);
 
   // PIDController leftPidController = new PIDController(0.10775, 0, 0);
   // PIDController rightPidController = new PIDController(0.10775, 0, 0);
-  PIDController rightPidController = new PIDController(8.5, 0, 0);
-  PIDController leftPidController = new PIDController(8.5, 0, 0);
+  PIDController rightPidController = new PIDController(2.8705, 0, 0);
+  PIDController leftPidController = new PIDController(2.8705, 0, 0);
 
   Pose2d pose;
 
@@ -58,8 +58,8 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
 
     leftMaster.setInverted(false);
     rightMaster.setInverted(true);
-    leftSlave.setInverted(InvertType.FollowMaster);
-    rightSlave.setInverted(InvertType.FollowMaster);
+    leftSlave.setInverted(false);
+    rightSlave.setInverted(true);
 
     gyro.reset();
   }
@@ -97,6 +97,8 @@ public class DriveTrainTestSubsystem extends SubsystemBase {
   public void setOuput(double leftVolts, double rightVolts) {
     leftMaster.set(leftVolts);
     rightMaster.set(rightVolts);
+    leftSlave.set(leftVolts);
+    rightSlave.set(rightVolts);
     drive.feed();
   }
 
