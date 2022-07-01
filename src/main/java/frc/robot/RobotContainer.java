@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Commands.AutonomousPathweaverTest;
 import frc.robot.Commands.Drivestop;
+import frc.robot.Commands.TrajectoryGeneratorTestCommand;
 import frc.robot.Constants.OIConstants;
 // import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveTrainTestSubsystem;
@@ -55,6 +56,7 @@ public class RobotContainer {
     XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
     private final AutonomousPathweaverTest autonomousPathweaverTest = new AutonomousPathweaverTest(drive);
+    private final TrajectoryGeneratorTestCommand trajectoryGenearatorTestCommand = new TrajectoryGeneratorTestCommand(drive);
     private final Drivestop stopDrive = new Drivestop(drive);
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -85,6 +87,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         new JoystickButton(m_driverController, Button.kA.value).whenPressed(autonomousPathweaverTest);
+        new JoystickButton(m_driverController, Button.kB.value).whenPressed(trajectoryGenearatorTestCommand);
         // Drive at half speed when the right bumper is held
         // new JoystickButton(m_driverController, Button.kRightBumper.value)
         //         .whenPressed(() -> m_robotDrive.setMaxOutput(0.5))
@@ -114,17 +117,17 @@ public class RobotContainer {
             PathWeaverTrajectory1 = TrajectoryUtil.fromPathweaverJson(PathweaverTestPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + trajectory1, ex.getStackTrace());
-            // PathWeaverTrajectory1 =
-            // TrajectoryGenerator.generateTrajectory(
-            //     // Start at the origin facing the +X direction
-            //     new Pose2d(0, 3, new Rotation2d(0)),
-            //     // Pass through these two interior waypoints, making an 's' curve path
-            //     //List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            //     List.of(new Translation2d(1,3), new Translation2d(2,3)),
-            //     // End 3 meters straight ahead of where we started, facing forward
-            //     new Pose2d(3, 3, new Rotation2d(0)),
-            //     // Pass config
-            //     config);
+            PathWeaverTrajectory1 =
+            TrajectoryGenerator.generateTrajectory(
+                // Start at the origin facing the +X direction
+                new Pose2d(0, 3, new Rotation2d(0)),
+                // Pass through these two interior waypoints, making an 's' curve path
+                //List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+                List.of(new Translation2d(1,3), new Translation2d(2,3)),
+                // End 3 meters straight ahead of where we started, facing forward
+                new Pose2d(3, 3, new Rotation2d(0)),
+                // Pass config
+                config);
         }
         RamseteCommand command = new RamseteCommand(PathWeaverTrajectory1, drive::getpose,
                 new RamseteController(2, 0.7), drive.getFeedForward(), drive.getKinematics(), drive::getSpeeds,
