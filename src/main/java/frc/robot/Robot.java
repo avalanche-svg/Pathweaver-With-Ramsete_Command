@@ -15,8 +15,11 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Commands.Drivestop;
 import frc.robot.subsystems.DriveTrainTestSubsystem;
 
@@ -30,6 +33,7 @@ public class Robot extends TimedRobot {
   DriveTrainTestSubsystem drive;
   private Command m_autonomousCommand;
   private Drivestop stopdrive = new Drivestop(drive);
+  private XboxController controller = new XboxController(2);
 
   private RobotContainer m_robotContainer;
   // String trajectoryJSON = "output/testpath.wpilib.json";
@@ -87,6 +91,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.getAutonomousCommand().schedule();
+    new JoystickButton(controller, Button.kX.value).whileHeld(m_robotContainer.getAutonomousCommand());
     
     // m_robotContainer.getDriveTrainTestSubsystem().setMotorSafety(true);
 
